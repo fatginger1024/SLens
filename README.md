@@ -38,3 +38,7 @@ section 3.1
 ![plot](./docs/mod2.jpg)
 ![plot](./docs/mod3.jpg)
 ![plot](./docs/mod4.jpg)
+
+## Workflow
+
+![plot](./docs/workflow.png)
