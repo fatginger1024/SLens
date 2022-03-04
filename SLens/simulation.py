@@ -83,7 +83,7 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
         return Lens_arr,Source_arr
     
     
-def run_mocks(simnum):
+def run_mocks(sim_num):
     gammas = np.linspace(.8,1.8,5)
     alphas = np.linspace(1.,1.8,5)
     Gamma = np.repeat(gammas,5)
@@ -136,7 +136,7 @@ def run_mocks(simnum):
     if len(Lens_arr)>0:
         dat1 = np.concatenate(Lens_arr,axis=None).reshape(-1,10)
         dat2 = np.concatenate(Source_arr,axis=None).reshape(-1,3)
-        dirbase = "SLens/mocks/"+str(simnum)
+        dirbase = "SLens/mocks/"+str(sim_num)
         if not os.path.exists(dirbase):
             os.mkdir(dirbase)
         dat1.tofile(dirbase+'/gamma{}_alpha{}.bin'.format(gamma,alpha),format='f8')
