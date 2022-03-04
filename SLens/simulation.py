@@ -83,7 +83,7 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
         return Lens_arr,Source_arr
     
     
-def run_mocks(sim_num):
+def run_mocks(simnum):
     gammas = np.linspace(.8,1.8,5)
     alphas = np.linspace(1.,1.8,5)
     Gamma = np.repeat(gammas,5)
