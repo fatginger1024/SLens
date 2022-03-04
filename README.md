@@ -12,18 +12,23 @@ Source galaxy cataglogue:
 
 [Laigle, C., McCracken, H. J., Ilbert, O., et al. 2016, ApJS, 224, 24](https://arxiv.org/abs/1604.02350)
 
-##Basic models
+## Basic models
 
 - gNFW:
+
 refer: Resolving the Central Density Profile of Dark Matter Halos Gravitational Lensing Statistics by Masamune Oguri, section E.1.5
-- S\'{e}rsic:
+- Sersic:
+
 refer: [Sonnenfeld, A. & Cautun, M. 2021, A&A, 651, A18](https://arxiv.org/abs/2102.08973)
 section 3.1
 - concentration:
+
 [Ludlow, A. D., Bose, S., Angulo, R. E., et al. 2016, MNRAS, 460, 1214](https://arxiv.org/abs/1601.02624) appendix c
 - mass-size:
+
 [Sonnenfeld, A., Wang, W., & Bahcall, N. 2019, A&A, 622, A30](https://arxiv.org/abs/1811.04934) section 3.1
 - angular diamter distance:
+
 [Hogg, David W. "Distance measures in cosmology." arXiv preprint astro-ph/9905116 (1999).](https://arxiv.org/abs/astro-ph/9905116) section 6
 
 
