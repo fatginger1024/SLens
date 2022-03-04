@@ -136,9 +136,9 @@ def run_mocks(sim_num):
     if len(Lens_arr)>0:
         dat1 = np.concatenate(Lens_arr,axis=None).reshape(-1,10)
         dat2 = np.concatenate(Source_arr,axis=None).reshape(-1,3)
-        dirbase = "SLens/mocks/"+str(count)
-        if not os.path.exists(simnum):
-            os.mkdir(simnum)
+        dirbase = "SLens/mocks/"+str(simnum)
+        if not os.path.exists(dirbase):
+            os.mkdir(dirbase)
         dat1.tofile(dirbase+'/gamma{}_alpha{}.bin'.format(gamma,alpha),format='f8')
         dat2.tofile(dirbase+'/gamma{}_alpha{}_Msource.bin'.format(gamma,alpha),format='f8')
 
