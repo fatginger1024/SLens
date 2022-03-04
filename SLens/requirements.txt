@@ -1,0 +1,6 @@
+numpy
+scipy
+astropy
+tqdm
+os 
+sys
