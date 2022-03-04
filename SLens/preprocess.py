@@ -1,6 +1,6 @@
 import numpy as np
-from SLens.models import gnfw, mass_size, concentration, Distances
-from SLens.load_data import load_MICE
+from ..models import gnfw, mass_size, concentration, Distances
+from ..load_data import load_MICE
 
 class _fxgx(gnfw):
 

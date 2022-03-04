@@ -1,5 +1,5 @@
-from SLens.models import Sersic, gnfw
-from SLens.load_data import fxgx
+from .models import Sersic, gnfw
+from .load_data import fxgx
 
 import numpy as np
 from math import *

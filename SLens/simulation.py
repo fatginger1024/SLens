@@ -1,9 +1,10 @@
-from SLens.analyse import analyser
-from SLens.load_data import load_MICE,load_COSMOS, ReConc_loader
+from .analyse import analyser
+from .load_data import load_MICE,load_COSMOS,ReConc_loader
 
 import os
 import sys
 import numpy as np
+from tqdm import tqdm
 
 class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
     
@@ -69,8 +70,8 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
                         pos_img2 = stat[3]
                         mu_img1 = stat[4]
                         mu_img2 = stat[5]
-                        Lens_arr = np.array([Mh_lens,Mstar_lens,zlens,conc,np.log10(scale_rad),
-                                             eins_rad,pos_img1,pos_img2,mu_img1,mu_img2])
+                        Lens_arr = np.concatenate(np.array([Mh_lens,Mstar_lens,zlens,conc,np.log10(scale_rad),
+                                             eins_rad,pos_img1,pos_img2,mu_img1,mu_img2]),axis=None)
                         Source_arr = np.array([eins_rad,rmag_source,z2_source])
                         print("found one!")
                         print(Lens_arr)
@@ -126,7 +127,7 @@ def run_mocks(sim_num):
         #dat2.tofile(dirbase+'/gamma{}_alpha{}_Msource.bin'.format(gamma,alpha),format='f8')
     """
     sim = SimRun()
-    for i in range(num_data):
+    for i in tqdm(range(num_data)):
         
         P,M = sim.run_one(i,alpha=Alpha[sim_num],gamma=Gamma[sim_num])
         if P[0] != 0.:
@@ -136,12 +137,16 @@ def run_mocks(sim_num):
         dat1 = np.concatenate(Lens_arr,axis=None).reshape(-1,10)
         dat2 = np.concatenate(Source_arr,axis=None).reshape(-1,3)
         dirbase = "SLens/mocks/"+str(count)
-        if not os.path.exists(dirname):
-            os.mkdir(dirname)
+        if not os.path.exists(simnum):
+            os.mkdir(simnum)
+        dat1.tofile(dirbase+'/gamma{}_alpha{}.bin'.format(gamma,alpha),format='f8')
+        dat2.tofile(dirbase+'/gamma{}_alpha{}_Msource.bin'.format(gamma,alpha),format='f8')
 
 if __name__ == "__main__":
-    
-    run_mocks(1)
+    start = int(sys.argv[1])
+    end = int(sys.argv[2])
+    for i in range(start,end+1):
+        run_mocks(i)
 
 
 

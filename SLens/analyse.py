@@ -1,4 +1,4 @@
-from SLens.cp_model import gnfwSersic
+from .cp_model import gnfwSersic
 
 from math import *
 import numpy as np

@@ -1,1 +1,1 @@
-python SLens/simulation.py 1 1 
+python -m SLens.simulation 0 2  

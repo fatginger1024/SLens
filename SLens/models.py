@@ -4,7 +4,7 @@ from scipy.integrate import quad,quad_vec
 from scipy.special import hyp2f1,gamma,gammainc
 from scipy.optimize import bisect
 
-from SLens.load_data import tables
+from .load_data import tables
 
 
 class Distances():
