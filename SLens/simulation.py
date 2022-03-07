@@ -128,6 +128,7 @@ def run_mocks(sim_num):
     """
     sim = SimRun()
     for i in tqdm(range(num_data)):
+       
         
         P,M = sim.run_one(i,alpha=Alpha[sim_num],gamma=Gamma[sim_num])
         if P[0] != 0.:
@@ -136,11 +137,11 @@ def run_mocks(sim_num):
     if len(Lens_arr)>0:
         dat1 = np.concatenate(Lens_arr,axis=None).reshape(-1,10)
         dat2 = np.concatenate(Source_arr,axis=None).reshape(-1,3)
-        dirbase = "SLens/mocks/"+str(sim_num)
-        if not os.path.exists(dirbase):
-            os.mkdir(dirbase)
-        dat1.tofile(dirbase+'/gamma{}_alpha{}.bin'.format(gamma,alpha),format='f8')
-        dat2.tofile(dirbase+'/gamma{}_alpha{}_Msource.bin'.format(gamma,alpha),format='f8')
+        dirbase = "./mocks/"
+        #if not os.path.exists(dirbase):
+        #    os.mkdir(dirbase)
+        dat1.tofile(os.path.join(dirbase,'gamma{}_alpha{}.bin').format(Gamma[sim_num],Alpha[sim_num]),format='f8')
+        dat2.tofile(os.path.join(dirbase,'gamma{}_alpha{}_Msource.bin').format(Gamma[sim_num],Alpha[sim_num]),format='f8')
 
 if __name__ == "__main__":
     start = int(sys.argv[1])
