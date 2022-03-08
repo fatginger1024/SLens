@@ -31,7 +31,7 @@ class lensplot(gnfwSersic):
         plt.show()
         if write:
             
-            fig.savefig("./plots/fxgx.eps",format="eps")
+            fig.savefig("./plots/fxgx.png",format="png")
 
     
     def plot_Sigma(self,write=False):
@@ -49,7 +49,7 @@ class lensplot(gnfwSersic):
 
         plt.show()
         if write:
-            fig.savefig("./plots/Sigma.eps",format="eps")
+            fig.savefig("./plots/Sigma.png",format="png")
             
     def plot_alpha(self,write=False):
         alphas = self.lens_alpha(self._x)
@@ -66,7 +66,7 @@ class lensplot(gnfwSersic):
 
         plt.show()
         if write:
-            fig.savefig("./plots/alpha.eps",format="eps")
+            fig.savefig("./plots/alpha.png",format="png")
             
     def plot_beta(self,write=False):
         betas = self.lens_beta(self._x)
@@ -91,7 +91,7 @@ class lensplot(gnfwSersic):
 
         plt.show()
         if write:
-            fig.savefig("./plots/beta.eps",format="eps")
+            fig.savefig("./plots/beta.png",format="png")
             
             
     def plot_kappa(self,write=False):
@@ -109,7 +109,7 @@ class lensplot(gnfwSersic):
 
         plt.show()
         if write:
-            fig.savefig("./plots/kappa.eps",format="eps")
+            fig.savefig("./plots/kappa.png",format="png")
             
             
     def plot_gamma(self,write=False):
@@ -127,7 +127,7 @@ class lensplot(gnfwSersic):
 
         plt.show()
         if write:
-            fig.savefig("./plots/gamma.eps",format="eps")
+            fig.savefig("./plots/gamma.png",format="png")
             
    
             
