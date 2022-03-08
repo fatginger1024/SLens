@@ -4,3 +4,4 @@ astropy
 tqdm
 os 
 sys
+tqdm
