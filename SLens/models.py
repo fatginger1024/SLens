@@ -112,7 +112,7 @@ class gnfw(tables):
         self.b = 4*self.rhos*self.rs/self.Sigmacr
         
      
-    def gnfw_M2d(self,x,f):
+    def gnfw_Sigma(self,x,f):
         return 2*self.rhos*self.rs*f(x,self.gamma)
     
     def gnfw_alpha(self,x,g):

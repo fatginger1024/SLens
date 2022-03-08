@@ -49,7 +49,7 @@ class lensplot(gnfwSersic):
 
         plt.show()
         if write:
-            fig.savefig("../plots/Sigma.eps",format="eps")
+            fig.savefig("./plots/Sigma.eps",format="eps")
             
     def plot_alpha(self,write=False):
         alphas = self.lens_alpha(self._x)
@@ -137,6 +137,7 @@ class lensplot(gnfwSersic):
 
 if __name__=="__main__":
     plot = lensplot()
+    plot.plot_Sigma(1)
     plot.plot_fxgx(1)
     plot.plot_alpha(1)
     plot.plot_beta(1)
