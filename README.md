@@ -46,6 +46,12 @@ section 3.1
 ## Analysing composite (gnfw+Sersic) lens statistics
 
 One can analyse the lens statistics using the <code>lens_statistics</code> module as provided in the tutorials.
+The lens statistics (as functions of the dimensionless radial coordiate $x$) are:
+- <img src="https://render.githubusercontent.com/render/math?math=\Sigma(x)">$\Sigma(x)$: the projected mass density;
+- $\alpha(x)$: the deflection angle;
+- $\beta(x)$: the lens equation, which describes the mapping from the lens plane $x$ to the source plane $\beta$;
+- $\kappa(x)$: the convergence, which describes the magnification of the image by increasing its size;
+- $\gamma(x)$: the shear, which describes the how much the shape of the image is changed tangentially.
 
 <img src="./plots/Sigma.png" width="512"/>
 <img src="./plots/alpha.png" width="512"/>
