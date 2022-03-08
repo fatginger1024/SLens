@@ -29,6 +29,7 @@ class lensplot(gnfwSersic):
         ax[1].set_ylabel('f(x)')
         ax[1].legend()
         plt.show()
+        fig.tight_layout()
         if write:
             
             fig.savefig("./plots/fxgx.png",format="png")
@@ -46,8 +47,8 @@ class lensplot(gnfwSersic):
         ax.set_xlabel('x')
         ax.set_ylabel(r"$\Sigma(x)$")
         ax.legend()
-
         plt.show()
+        fig.tight_layout()
         if write:
             fig.savefig("./plots/Sigma.png",format="png")
             
@@ -63,8 +64,8 @@ class lensplot(gnfwSersic):
         ax.set_xlabel('x')
         ax.set_ylabel(r"$\alpha(x)$")
         ax.legend()
-
         plt.show()
+        fig.tight_layout()
         if write:
             fig.savefig("./plots/alpha.png",format="png")
             
@@ -88,8 +89,8 @@ class lensplot(gnfwSersic):
         ax.set_xlim([-self._x[-1]*.1,self._x[-1]*.1])
         ax.set_ylim([-.15,.15])
         ax.legend()
-
         plt.show()
+        fig.tight_layout()
         if write:
             fig.savefig("./plots/beta.png",format="png")
             
@@ -106,8 +107,8 @@ class lensplot(gnfwSersic):
         ax.set_xlabel('x')
         ax.set_ylabel(r"$\kappa(x)$")
         ax.legend()
-
         plt.show()
+        fig.tight_layout()
         if write:
             fig.savefig("./plots/kappa.png",format="png")
             
@@ -124,8 +125,8 @@ class lensplot(gnfwSersic):
         ax.set_xlabel('x')
         ax.set_ylabel(r"$\gamma(x)$")
         ax.legend()
-
         plt.show()
+        fig.tight_layout()
         if write:
             fig.savefig("./plots/gamma.png",format="png")
             
