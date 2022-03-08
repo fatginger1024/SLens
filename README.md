@@ -47,8 +47,8 @@ section 3.1
 
 One can analyse the lens statistics using the <code>lens_statistics</code> module as provided in the tutorials.
 
-![plot](./plots/Sigma.png){width=50%}
-![plot](./plots/alpha.png)
-![plot](./plots/beta.png)
-![plot](./plots/gamma.png)
-![plot](./plots/kappa.png)
+<img src="./plots/Sigma.png" width="128"/>
+<img src="./plots/alpha.png" width="128"/>
+<img src="./plots/beta.png" width="128"/>
+<img src="./plots/kappa.png" width="128"/>
+<img src="./plots/gamma.png" width="128"/>
