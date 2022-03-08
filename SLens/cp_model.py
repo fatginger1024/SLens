@@ -17,6 +17,12 @@ class gnfwSersic(gnfw,Sersic,fxgx):
         self.fx_approx = interp2d(self._x,self._gamma,self.fvals)
         self.gx_approx = interp2d(self._x,self._gamma,self.gvals)
         
+    def lens_Sigma(self,x):
+        r = x*self.rs
+        gnfw = self.gnfw_Sigma(x,self.fx_approx)
+        galaxy = self.Sigma(r)
+        
+        return gnfw + galaxy
         
       
         

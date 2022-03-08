@@ -111,7 +111,10 @@ class gnfw(tables):
         self.kappas =  self.rhos*self.rs/self.Sigmacr
         self.b = 4*self.rhos*self.rs/self.Sigmacr
         
-        
+     
+    def gnfw_M2d(self,x,f):
+        return 2*self.rhos*self.rs*f(x,self.gamma)
+    
     def gnfw_alpha(self,x,g):
         
         return self.b*g(x,self.gamma)
@@ -132,10 +135,10 @@ class gnfw(tables):
         
         return detA
         
-    def gnfw_beta(self,x):
+    def gnfw_beta(self,x,g):
         x = np.atleast_1d(x)
         beta = x*0.
-        beta = x-self.gnfw_alpha(x)
+        beta = x-self.gnfw_alpha(x,g)
         
         return beta
 
@@ -221,6 +224,12 @@ class Sersic():
         alpha = self.M2d(R)/(pi*R**2)/Sigmacr*x
         
         return alpha
+    
+    def galaxy_beta(self,R,Sigmacr,x):
+        
+        beta = x - self.galaxy_alpha(R,Sigmacr,x)
+        
+        return beta
     
     def galaxy_kappa(self,R,Sigmacr):
         
