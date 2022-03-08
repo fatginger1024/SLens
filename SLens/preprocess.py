@@ -12,14 +12,14 @@ class _fxgx(gnfw):
         self._gamma = np.linspace(.8,1.8,self._gamma_num)
         self._xx,self._gg = np.meshgrid(self._x,self._gamma)
         if write == True:
-            dirbase = "SLens/test_data/"
+            dirbase = "../test_data/"
             self.fvals = self.fval()
             self.gvals = self.gval()
             self.fvals.tofile(dirbase+"fx.bin",format='f8')
             self.gvals.tofile(dirbase+"gx.bin",format='f8')
             
         else:
-            dirbase = "SLens/test_data/"
+            dirbase = "../test_data/"
             self.fvals = np.fromfile(dirbase+"fx.bin",dtype="f8").reshape(self._gamma_num,self._N)
             self.gvals = np.fromfile(dirbase+"gx.bin",dtype="f8").reshape(self._gamma_num,self._N)
         
@@ -76,7 +76,7 @@ class _tables(Distances):
 
                 
     def write(self,):
-        dirbase = "SLens/test_data/"
+        dirbase = "../test_data/"
         f1 = open(dirbase+"Da1.pkl","wb")
         pickle.dump(self.Da1_dict,f1)
         f1.close()
@@ -90,7 +90,7 @@ class _tables(Distances):
         f3.close()
         
     def load(self,):
-        dirbase = "SLens/test_data/"
+        dirbase = "../test_data/"
         with open(dirbase+"Da1.pkl", "rb") as f1:
             Da1_dict = pickle.load(f1)
             f1.close()
