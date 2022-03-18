@@ -57,7 +57,7 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
                                                         c=conc,Re=scale_rad,alpha=alpha,gamma=gamma,
                                                    source_mag=rmag_source,dist=dist)
                         stat = analyse_einsrad.get_cross_section()
-                        dist_real = stat[1]
+                        dist_real = stat[0]
 
 
                     except RuntimeError or KeyError:
@@ -65,7 +65,7 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
                         
                     if dist < dist_real:
 
-                        eins_rad = stat[0]
+                        eins_rad = stat[1]
                         pos_img1 = stat[2]
                         pos_img2 = stat[3]
                         mu_img1 = stat[4]

@@ -2,96 +2,102 @@ from .cp_model import gnfwSersic
 
 from math import *
 import numpy as np
-from scipy.optimize import fmin,bisect
+from scipy.optimize import fmin,bisect,brentq
+
 
 
 
 class analyser(gnfwSersic):
     
-    def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1,source_mag=25.,dist=1):
+    def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1,source_mag=25.,dist=1,m_tol=26.3):
         
         gnfwSersic.__init__(self,z1=z1,z2=z2,M200=M200,Mstar=Mstar,c=c,Re=Re,alpha=alpha,gamma=gamma)
         self.dist = dist
         self.mag_unlensed = source_mag
-        
-    def get_search_range(self,tol=26.3,buffer=.1):
-        xmin,xmax = -6,0
-        xval = np.logspace(xmin,xmax,10000)
-        thetas = xval*self.thetas*206265
-        betas = self.lens_beta(xval)*self.thetas*206265
-        ind = np.argmin(betas)
-        xval_min = xval[ind]
-        caus1 = betas[ind]
-        rt_eins_ind = np.argmin(np.abs(self.lens_alpha(xval)-xval))
-        eins = xval[rt_eins_ind]*self.thetas*206265
-        msk = (xval>xval_min*(1+buffer))*(betas<0)
-        mag = np.abs(1/self.lens_detA(xval[msk]))
-        app_m = self.get_lensed_mag(mag)
-        mg_msk = app_m<tol
-        
-        try:
-            beta_mag = betas[msk][mg_msk][0]
-            
-        except ValueError or IndexError:
-            
-            beta_mag = 0
-        
-        return np.abs(caus1),np.abs(beta_mag)
-        
+        self.m_tol = m_tol
+        self.attr = 2
     
-    def get_cross_section(self,tol=26.3,buffer=.1):
-        xmin,xmax = -4,0
-        xval = np.logspace(xmin,xmax,10000)
-        thetas = xval*self.thetas*206265
-        alphas = lambda x:-self.lens_alpha(x)
-        xmax_alpha = fmin(alphas,1e-2,disp=0)
-        betas = self.lens_beta(xval)*self.thetas*206265
-        ind = np.argmin(betas)
-        xval_min = xval[ind]
-        caus1 = betas[ind]
-        rt_eins_ind = np.argmin(np.abs(self.lens_alpha(xval)-xval))
-        eins = xval[rt_eins_ind]*self.thetas*206265
-        msk = (xval>xval_min*(1+buffer))*(betas<0)
-        mag = np.abs(1/self.lens_detA(xval[msk]))
-        app_m = self.get_lensed_mag(mag)
-        mg_msk = app_m<tol
+ 
+    
+    @property    
+    def attr(self):
+        return self._attr
+
+    @attr.setter
+    def attr(self,val):
+        minsearch = fmin(self.lens_beta,1e-2,disp=0)
+        xval_min = minsearch[0]
+        sol = brentq(self.lens_beta,self._x[0],self._x[-1])
+        eins = sol*self.thetas*206265
+        caus = self.lens_beta(xval_min)[0]*self.thetas*206265
+        sol = fmin(self.magnitude_difference,1e-2,disp=0)
+        beta_mag = self.lens_beta(sol)[0]*self.thetas*206265
         
-        try:
-            beta_mag = betas[msk][mg_msk][0]
-        except ValueError or IndexError:
-            beta_mag = 0
-            
-       
-            
+        self._attr = (eins,np.abs(caus),np.abs(beta_mag))
+    
+    def get_search_range(self):
+        
+        return self.attr[1],self.attr[2]
+        
+      
+    def get_cross_section(self,buffer=.1):
+        
         dist_beta = (self.dist/(self.thetas*206265))
+        func1 = lambda x: np.abs(self.lens_beta(x)-dist_beta)
+        func2 = lambda x: np.abs(self.lens_beta(x)+dist_beta)
         
-        if dist_beta <= np.abs(self.lens_beta(xval_min)):
-            dist_image1 = xval[np.argmin(np.abs(self.lens_beta(xval) - dist_beta))]
-            try:
-                func_image2 = lambda x: self.lens_beta(x) + dist_beta
-                dist_image2 = bisect(func_image2,xmax_alpha,xval[-1])
-                
-            except ValueError:
-                dist_image2 = xval[np.argmin(np.abs(self.lens_beta(xval) + dist_beta))]
+        if self.dist <= self.attr[2]:
             
+            dist_image1 = fmin(func1,1e-2,disp=0)[0]
+            dist_image2 = fmin(func2,1e-2,disp=0)[0]
             pos_image1 = dist_image1 * (self.thetas*206265)
             pos_image2 = -dist_image2 * (self.thetas*206265)
-            mu_image1 = np.abs(1/self.lens_detA(dist_image1))
-            mu_image2 = np.abs(1/self.lens_detA(dist_image2))
+            mu_image1 = np.abs(1/self.lens_detA(dist_image1))[0]
+            mu_image2 = np.abs(1/self.lens_detA(dist_image2))[0]
+        
         else:
             
             pos_image1 = 0
             pos_image2 = 0
             mu_image1 = 0
             mu_image2 = 0
-            
-        return np.abs(beta_mag),eins,pos_image1,pos_image2,mu_image1,mu_image2
+        
+        
+        return self.attr[2],self.attr[0],pos_image1,pos_image2,mu_image1,mu_image2
+    
+    def plotter(self,):
+        
+        x = self._x
+        y = self.magnitude_difference(x)
+        
+        import matplotlib.pyplot as plt
+        
+        plt.figure(figsize=(4,4))
+        plt.plot(x,y)
+        plt.xlabel("x")
+        plt.ylabel(r"$m_{lensed}-m_{tol}$")
+        plt.show()
+        
+          
 
     def get_lensed_mag(self,m):
         return self.mag_unlensed - 2.5*np.log10(m)
     
-        
-        
+    def magnitude_difference(self,x):
+        m_tol = self.m_tol
+        return np.abs(self.get_lensed_mag(1./np.abs(self.lens_detA(x)))-m_tol)
+    
+    
+    
+    
+    
+    
+if __name__ == "__main__":
+    stat = analyser()
+    stat.plotter()
+    stat.get_search_range()
+    
+    
         
 
         
