@@ -30,14 +30,16 @@ class analyser(gnfwSersic):
         sol = brentq(self.lens_beta,self._x[0],self._x[-1])
         eins = sol*self.thetas*206265
         caus = self.lens_beta(xval_min)[0]*self.thetas*206265
+        t_caus = self.lens_beta(sol)[0]*self.thetas*206265
         sol = fmin(self.magnitude_difference,1e-2,disp=0)
         beta_mag = self.lens_beta(sol)[0]*self.thetas*206265
         
-        self._attr = (eins,np.abs(caus),np.abs(beta_mag))
+        self._attr = (eins,np.abs(caus),np.abs(t_caus),np.abs(beta_mag),
+                      xval_min*self.thetas*206265)
     
     def get_search_range(self):
         
-        return self.attr[1],self.attr[2]
+        return self.attr[1],self.attr[3]
         
       
     def get_cross_section(self,buffer=.1):
@@ -45,25 +47,23 @@ class analyser(gnfwSersic):
         dist_beta = (self.dist/(self.thetas*206265))
         func1 = lambda x: np.abs(self.lens_beta(x)-dist_beta)
         func2 = lambda x: np.abs(self.lens_beta(x)+dist_beta)
+        dist_image1 = fmin(func1,1e-2,disp=0)[0]
+        pos_image1 = dist_image1 * (self.thetas*206265)
+        mu_image1 = np.abs(1/self.lens_detA(dist_image1))[0]
         
-        if self.dist <= self.attr[2]:
+        if self.dist <= self.attr[1]:
             
-            dist_image1 = fmin(func1,1e-2,disp=0)[0]
             dist_image2 = fmin(func2,1e-2,disp=0)[0]
-            pos_image1 = dist_image1 * (self.thetas*206265)
             pos_image2 = -dist_image2 * (self.thetas*206265)
-            mu_image1 = np.abs(1/self.lens_detA(dist_image1))[0]
             mu_image2 = np.abs(1/self.lens_detA(dist_image2))[0]
         
         else:
-            
-            pos_image1 = 0
+                   
             pos_image2 = 0
-            mu_image1 = 0
             mu_image2 = 0
         
         
-        return self.attr[2],self.attr[0],pos_image1,pos_image2,mu_image1,mu_image2
+        return self.attr[3],self.attr[0],pos_image1,pos_image2,mu_image1,mu_image2
     
     def plotter(self,):
         
