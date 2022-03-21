@@ -58,3 +58,11 @@ The lens statistics (as functions of the dimensionless radial coordiate <img src
 <img src="./plots/beta.png" width="512"/>
 <img src="./plots/kappa.png" width="512"/>
 <img src="./plots/gamma.png" width="512"/>
+
+
+## Lens mapping demonstration
+
+Below is an example of how changing the source radial position would impact the image position(s). When the source is outiside of the radial caustic, there is one image generated on the image plane; when it crosses the caustic, there would be three images. On its way of moving radially inwards, the magnification(s) of the images increase.
+
+<img src="./plots/movie.gif" width="512"/>
+
