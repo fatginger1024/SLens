@@ -49,4 +49,4 @@ for num,arc in enumerate(Arc):
 
 fig.tight_layout()
 plt.show()
-fig.savefig("./plots/source_loc.eps",format='eps')
+fig.savefig("./plots/source_loc.png",format='eps')
