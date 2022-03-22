@@ -10,9 +10,9 @@ for num,arc in enumerate(Arc):
     stat = analyser(dist=arc)
     attr = stat.get_cross_section()
     
-    circle1 = plt.Circle((0,0),stat.attr[4],lw=2,facecolor='none',edgecolor='rebeccapurple')
+    circle1 = plt.Circle((0,0),stat.attr[1],lw=2,facecolor='none',edgecolor='rebeccapurple')
     circle2 = plt.Circle((0,0),stat.attr[0],lw=2,facecolor='none',edgecolor='rebeccapurple')
-    circle3 = plt.Circle((0,0),stat.attr[1],lw=2,facecolor='none',edgecolor='firebrick')
+    circle3 = plt.Circle((0,0),stat.attr[3],lw=2,facecolor='none',edgecolor='firebrick')
     xr = np.sqrt(2)/2
     sol = np.array([attr[3],attr[2],0])
     mag = np.array([attr[5],attr[4],0])
@@ -49,4 +49,4 @@ for num,arc in enumerate(Arc):
 
 fig.tight_layout()
 plt.show()
-fig.savefig("./plots/source_loc.png",format='eps')
+fig.savefig("./plots/source_loc.png",format='png')

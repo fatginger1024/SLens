@@ -25,21 +25,31 @@ class analyser(gnfwSersic):
 
     @attr.setter
     def attr(self,val):
+        """
+        Function that sets the lens statistics.
+        Returns: 
+        Einstein radius (tangential critical curve), 
+        radial critical curve,
+        tangential caustic,
+        radial caustic,
+        caustic with applied apparent magnitude threshold.
+        """
         minsearch = fmin(self.lens_beta,1e-2,disp=0)
         xval_min = minsearch[0]
+        radial_critical = xval_min*self.thetas*206265
         sol = brentq(self.lens_beta,self._x[0],self._x[-1])
         eins = sol*self.thetas*206265
-        caus = self.lens_beta(xval_min)[0]*self.thetas*206265
-        t_caus = self.lens_beta(sol)[0]*self.thetas*206265
+        caus_r = self.lens_beta(xval_min)[0]*self.thetas*206265
+        caus_t = self.lens_beta(sol)[0]*self.thetas*206265
         sol = fmin(self.magnitude_difference,1e-2,disp=0)
         beta_mag = self.lens_beta(sol)[0]*self.thetas*206265
         
-        self._attr = (eins,np.abs(caus),np.abs(t_caus),np.abs(beta_mag),
-                      xval_min*self.thetas*206265)
+        self._attr = (eins,radial_critical,np.abs(caus_t),np.abs(caus_r),
+                      np.abs(beta_mag))
     
     def get_search_range(self):
         
-        return self.attr[1],self.attr[3]
+        return self.attr[3],self.attr[4]
         
       
     def get_cross_section(self,buffer=.1):
@@ -51,7 +61,7 @@ class analyser(gnfwSersic):
         pos_image1 = dist_image1 * (self.thetas*206265)
         mu_image1 = np.abs(1/self.lens_detA(dist_image1))[0]
         
-        if self.dist <= self.attr[1]:
+        if self.dist <= self.attr[3]:
             
             dist_image2 = fmin(func2,1e-2,disp=0)[0]
             pos_image2 = -dist_image2 * (self.thetas*206265)
@@ -63,7 +73,7 @@ class analyser(gnfwSersic):
             mu_image2 = 0
         
         
-        return self.attr[3],self.attr[0],pos_image1,pos_image2,mu_image1,mu_image2
+        return self.attr[4],self.attr[0],pos_image1,pos_image2,mu_image1,mu_image2
     
     def plotter(self,):
         

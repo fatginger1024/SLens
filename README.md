@@ -66,3 +66,14 @@ Below is an example of how changing the source radial position would impact the 
 
 <img src="./plots/movie.gif" width="512"/>
 
+## Getting the lens images
+
+By means of the deflection angle equation we could find the positions of the images, given the source position. Below gives an axample of find ing the image positions.
+
+<img src="./plots/illus.png" width="512"/>
+
+
+## Defining a strong lensing event
+
+We define a lens to be a strong lens if it generates at least two images with apparent magnitude greater than a threshold (26.3). 
+<img src="./plots/mag_images.png" width="512"/>
