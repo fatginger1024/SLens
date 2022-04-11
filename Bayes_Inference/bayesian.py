@@ -155,8 +155,8 @@ class interpolations(truth_properties):
             self.totnum[i] = len(zlens[zlens>0])
             self.Args1[i] = mo1
             self.Args2[i] = mo2
-            self.Args3[i] = np.sqrt(mo2/N)
-            self.Args4[i] = np.sqrt(np.mean((exp_e-mo1)**4)/N- mo2**2 * (N-3)/(N*(N-1)))
+            self.Args3[i] = mo2/N
+            self.Args4[i] = np.mean((exp_e-mo1)**4)/N- mo2**2 * (N-3)/(N*(N-1))
         
         self.totnum = np.asarray(self.totnum).reshape(len(self.alpha),len(self.gamma))
         self.Args1 = np.asarray(self.Args1).reshape(len(self.alpha),len(self.gamma))
@@ -266,11 +266,10 @@ class interpolations(truth_properties):
         return [lv3,lv2,lv1]
     
     def get_Z(self,):
-        print("check: ",self.new_varvar.min(),)
+        
         Z1 = interpolations.probN(x=self.new_totnum,mu=self.NSL_obs)
         Z2 = interpolations.probmu(x=self.new_mu,mu=self.mu_obs,sig=self.new_meanvar)
         Z3 = interpolations.probsig(x=self.new_sig,mu=self.sig_obs,sig=self.new_varvar)
-        
         Z4 = Z1*Z2*Z3
         lvs1 = interpolations.get_levels(Z1)
         lvs2 = interpolations.get_levels(Z2)
@@ -282,8 +281,8 @@ class interpolations(truth_properties):
     def get_new_Z4(self,):
 
         Num_Z4 = 500
-        Gamma_Z4 = np.linspace(1.25,1.34,Num_Z4)
-        Alpha_Z4 = np.linspace(1.1,1.3,Num_Z4)
+        Gamma_Z4 = np.linspace(1.295,1.305,Num_Z4)
+        Alpha_Z4 = np.linspace(1.18,1.22,Num_Z4)
         
         totnum_Z4 = self.func2d(Gamma_Z4,Alpha_Z4)
         mu_Z4 = self.func2d_mu(Gamma_Z4,Alpha_Z4)
@@ -326,12 +325,12 @@ class interpolations(truth_properties):
         axins = ax.inset_axes([0.58, 0.3, 0.35, 0.35])
         #axins.contourf(x,y,Z4,levels=np.concatenate((lvs4,Z4.max()),axis=None),cmap='Reds')
         axins.contourf(Gamma_Z4,Alpha_Z4,Z4,levels=np.concatenate((lvs4,Z4.max()),axis=None),cmap='Reds')
-        axins.text(1.32,1.25,'joint',fontsize=10, family='serif',style='italic', ha='center',va='top', wrap=True)
+        axins.text(1.302,1.217,'joint',fontsize=10, family='serif',style='italic', ha='center',va='top', wrap=True)
         axins.plot(self.gamma_truth,self.alpha_truth,lw=0,marker='h',color="khaki",mec="k",markersize=5,zorder=2,label="truth")
         axins.tick_params(axis='x', labelsize=8) 
         axins.tick_params(axis='y', labelsize=8) 
-        axins.set_xlim([1.25,1.34])
-        axins.set_ylim([1.1,1.3])
+        axins.set_xlim([1.295,1.305])
+        axins.set_ylim([1.18,1.22])
         axins.legend(loc=3,fontsize="x-small")
 
         ax.indicate_inset_zoom(axins, edgecolor="black")
