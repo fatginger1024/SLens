@@ -197,7 +197,7 @@ class interpolations(truth_properties):
         Vals_title = [r"$\mathcal{N}_{\rm{SL}}$",r"$\mu_{\theta_E}$",r"$\sigma^2_{\theta_E}$",r"$SD[\mu_{\theta_E}]$",r"$SD[\sigma^2_{\theta_E}]$"]
         Vals_interp_title = [r"$ \mathcal{S}\left(\mathcal{N}_{\rm{SL}}\right)$",r"$\mathcal{S}\left(\mu_{\theta_E}\right)$",r"$\mathcal{S}\left(\sigma^2_{\theta_E}\right)$",r"$\mathcal{S}\left(SD[\mu_{\theta_E}]\right)$",r"$\mathcal{S}\left(SD[\sigma^2_{\theta_E}]\right)$"]
 
-        fig,ax = plt.subplots(2,5,figsize=(18,8))
+        fig,ax = plt.subplots(2,5,figsize=(15,6))
         for i in range(len(Vals)):
             im1 = ax[0,i].imshow(Vals[i],extent=[-1,1,-1,1],origin='lower')
             ax[0,i].set_xticks(np.linspace(-1,1,6))
@@ -206,7 +206,10 @@ class interpolations(truth_properties):
             ax[0,i].set_yticklabels(np.round(np.linspace(1.,1.8,6),2))
             divider = make_axes_locatable(ax[0,i])
             cax1 = divider.append_axes('right', size='5%', pad=0.05)
-            fig.colorbar(im1, cax=cax1, orientation='vertical')
+            cbar = fig.colorbar(im1, cax=cax1, orientation='vertical')
+            if i == 0:
+                cbar.set_ticks([100000,200000,300000])
+                cbar.set_ticklabels(['100k','200k','300k'])
             ax[0,i].set_ylabel(r'$\alpha_{\rm{sps}}$')
             ax[0,i].set_xlabel(r'$\gamma_{DM}$')
             ax[0,i].set_title(Vals_title[i],fontsize=15)
@@ -218,13 +221,23 @@ class interpolations(truth_properties):
             ax[1,i].set_yticklabels(np.round(np.linspace(1.,1.8,6),2))
             divider = make_axes_locatable(ax[1,i])
             cax2 = divider.append_axes('right', size='5%', pad=0.05)
-            fig.colorbar(im2, cax=cax2, orientation='vertical')
+            cbar = fig.colorbar(im2, cax=cax2, orientation='vertical')
+            if i == 0:
+                cbar.set_ticks([100000,200000,300000])
+                cbar.set_ticklabels(['100k','200k','300k'])
             ax[1,i].set_ylabel(r'$\alpha_{\rm{sps}}$')
             ax[1,i].set_xlabel(r'$\gamma_{DM}$')
             ax[1,i].set_title(Vals_interp_title[i],fontsize=15)
 
 
-        fig.tight_layout()
+        fig.tight_layout(h_pad=.4,w_pad=.4)
+        #plt.subplots_adjust(left=0.1,
+        #            bottom=0.1, 
+        #            right=0.9, 
+        #            top=0.9, 
+        #           wspace=0.5, 
+        #            hspace=0.5)
+        
         plt.show()
         fig.savefig("./plots/interp_3.eps",format='eps')
         
@@ -355,13 +368,13 @@ class interpolations(truth_properties):
         
 if __name__=="__main__":
     
-    plots = pairplots()
-    plots.get_pairplot1()
-    plots.get_pairplot2()
+    #plots = pairplots()
+    #plots.get_pairplot1()
+    #plots.get_pairplot2()
     plots = interpolations()
     plots.get_interpolations()
-    plots.get_contour()
-    plots.get_limits()
+    #plots.get_contour()
+    #plots.get_limits()
 
 
 
