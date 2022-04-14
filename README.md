@@ -2,6 +2,17 @@
 ## Introduction
 
 Galaxy-galaxy strong lensing simualtion package. Assuming all lenses are axis-symmetric, whose mass density profiles can be modelled by a gnfw+Sersic model.
+
+## Installation
+
+### Dependencies
+- numpy>=1.21.4
+- scipy>=1.8.0
+- astropy>=5.0.1
+- tqdm>=4.63.0
+
+
+
 ## Data
 Lens galaxy catalogue:
 
@@ -76,3 +87,6 @@ By means of the deflection angle equation we could find the positions of the ima
 
 We define a lens to be a strong lens if it generates at least two images with apparent magnitude greater than a threshold (26.3). 
 <img src="./plots/mag_images.png" width="512"/>
+
+## License
+This code is licensed under the MIT license and is intended for academic research.
