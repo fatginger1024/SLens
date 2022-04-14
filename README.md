@@ -5,8 +5,7 @@ Galaxy-galaxy strong lensing simualtion package. Assuming all lenses are axis-sy
 ## Data
 Lens galaxy catalogue:
 
-[Crocce, M., Castander, F. J., Gaztañaga, E., Fosalba, P., & Carretero, J. 2015,
-MNRAS, 453, 1513](https://arxiv.org/abs/1312.2013)
+[Crocce, M., Castander, F. J., Gaztañaga, E., Fosalba, P., & Carretero, J. 2015, MNRAS, 453, 1513](https://arxiv.org/abs/1312.2013)
 
 Source galaxy cataglogue:
 
