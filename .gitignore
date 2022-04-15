@@ -1,4 +1,4 @@
-SLens/test_data/
+SLens/test_data/*.fits
 *.pyc
 # Byte-compiled / optimized / DLL files
 __pycache__/

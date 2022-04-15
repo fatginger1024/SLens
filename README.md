@@ -7,9 +7,9 @@ Galaxy-galaxy strong lensing simualtion package. Assuming all lenses are axis-sy
 
 ### Dependencies
 - numpy>=1.21.4
-- scipy>=1.8.0
-- astropy>=5.0.1
-- tqdm>=4.63.0
+- scipy>=1.7.1
+- astropy>=3.2.2
+- tqdm>=4.36.1
 
 
 
