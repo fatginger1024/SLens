@@ -5,11 +5,39 @@ Galaxy-galaxy strong lensing simualtion package. Assuming all lenses are axis-sy
 
 ## Installation
 
+### From GitHub
+Get the code from GitHub:
+
+    git clone https://github.com/fatginger1024/SLens.git 
+
+Then inside SLens run:
+
+    python setup.py install 
+
+Alternatively, if you do not wish to install SLens, you can also download/clone it as stated above, and then make sure to add it to your PYTHONPATH by:
+
+export PYTHONPATH=""/path_to_SLens/""
+
 ### Dependencies
 - numpy>=1.21.4
 - scipy>=1.7.1
 - astropy>=3.2.2
 - tqdm>=4.36.1
+
+
+## Testing
+
+To test whether SLens is successfully installed and is properly functioning, you can run the following test code:
+
+    from SLens import analyser 
+    method = analyser()
+    out = method.get_cross_section()
+    
+You should get something similar to:
+
+    >>> out
+    (1.1643534724004403, 1.4196481784612613, 2.2720335055294467, -0.7272314003782123, 2.0619025821969736, 0.43005470946638896)(1.1643534724004403, 1.4196481784612613, 2.2720335055294467, -0.7272314003782123, 2.0619025821969736, 0.43005470946638896) 
+
 
 
 
