@@ -89,4 +89,4 @@ We define a lens to be a strong lens if it generates at least two images with ap
 <img src="./plots/mag_images.png" width="512"/>
 
 ## License
-This code is licensed under the MIT license and is intended for academic research.
+This code is licensed under the [MIT license](./LICENSE) and is intended for academic research.
