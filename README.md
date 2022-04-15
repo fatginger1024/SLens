@@ -16,7 +16,7 @@ Then inside SLens run:
 
 Alternatively, if you do not wish to install SLens, you can also download/clone it as stated above, and then make sure to add it to your PYTHONPATH by:
 
-    export PYTHONPATH=""/path_to_SLens/""
+    export PYTHONPATH="/path_to_SLens/"
 
 ### Dependencies
 - numpy>=1.21.4
