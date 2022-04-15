@@ -116,5 +116,8 @@ By means of the deflection angle equation we could find the positions of the ima
 We define a lens to be a strong lens if it generates at least two images with apparent magnitude greater than a threshold (26.3). 
 <img src="./plots/mag_images.png" width="512"/>
 
+## Contact
+This is only a rudimentary guide to strong lensing simulation, for more information please feel free to contact the author (**Qing Zhou**) via [email](mailto:asmee.rodeus@gmail.com).
+
 ## License
 This code is licensed under the [MIT license](./LICENSE) and is intended for academic research.
