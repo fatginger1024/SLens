@@ -28,11 +28,11 @@ class analyser(gnfwSersic):
         """
         Function that sets the lens statistics.
         Returns: 
-        Einstein radius (tangential critical curve), 
-        radial critical curve,
-        tangential caustic,
-        radial caustic,
-        caustic with applied apparent magnitude threshold.
+        - Einstein radius (tangential critical curve), 
+        - radial critical curve,
+        - tangential caustic,
+        - radial caustic,
+        - caustic with applied apparent magnitude threshold.
         """
         minsearch = fmin(self.lens_beta,1e-2,disp=0)
         xval_min = minsearch[0]

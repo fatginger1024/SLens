@@ -15,7 +15,8 @@ class tests(unittest.TestCase):
         inte_func = lambda R: galaxy.Sigma(R)*R
         inte_out = quad(inte_func,0,galaxy._Re)[0]
         self.assertAlmostEqual(2*pi*inte_out/(galaxy._Mstar/2),1,places=5)
- 
+        
+  
     
 if __name__ == '__main__':
     unittest.main()
