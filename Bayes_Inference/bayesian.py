@@ -195,7 +195,7 @@ class interpolations(truth_properties):
         Vals = [self.totnum,self.Args1,self.Args2,self.Args3**2,self.Args4**2]
         Vals_interp = [self.new_totnum,self.new_mu,self.new_sig,self.new_meanvar**2,self.new_varvar**2]
         Vals_title = [r"$\mathcal{N}_{\rm{SL}}$",r"$\mu_{\theta_E}$",r"$\sigma^2_{\theta_E}$",r"$Var[\mu_{\theta_E}]$",r"$Var[\sigma^2_{\theta_E}]$"]
-        Vals_interp_title = [r"$ \mathcal{S}\left(\mathcal{N}_{\rm{SL}}\right)$",r"$\mathcal{S}\left(\mu_{\theta_E}\right)$",r"$\mathcal{S}\left(\sigma^2_{\theta_E}\right)$",r"$\mathcal{S}\left(Var[\mu_{\theta_E}]\right)$",r"$\mathcal{S}\left(Var[\sigma^2_{\theta_E}]\right)$"]
+        Vals_interp_title = [r"$ \mathcal{N}_{\rm{SL,spl}}$",r"$\mu_{\theta_E,\rm{spl}}$",r"$\sigma^2_{\theta_E,\rm{spl}}$",r"$Var[\mu_{\theta_E}]_{\rm{spl}}$",r"$Var[\sigma^2_{\theta_E}]_{\rm{spl}}$"]
 
         fig,ax = plt.subplots(2,5,figsize=(15,6))
         for i in range(len(Vals)):
