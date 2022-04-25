@@ -9,7 +9,7 @@ from .load_data import tables
 
 class Distances():
     
-    def __init__(self,z0=0,z1=.3,z2=1.5,Om=.25,Ol=.75,Or=8.4e-5,H0=70):
+    def __init__(self,z0=0,z1=.3,z2=1.5,Om=.25,Ol=.75,Or=8.4e-5,H0=73):
         
         self.Om = Om
         self.Or = Or
