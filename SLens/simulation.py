@@ -16,10 +16,15 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
         ReConc_loader.__init__(self,)
         analyser.__init__(self,z1=z1,z2=z2,M200=M200,Mstar=Mstar,c=c,Re=Re,
                           alpha=alpha,gamma=gamma,source_mag=source_mag,dist=dist)
+        self.z_bins = np.linspace(0,6,21)
+        self.z_digit = np.digitize(self.source_generator[:,0],self.z_bins)
         
+    @property
+    def pops(self):
+        return self._pops
         
-    def run_one(self,i,h=.7,buffer=.1,alpha=1,gamma=1):
-        
+    @pops.setter
+    def pops(self,i):  
         zlens = self.zlens_arr[i]
         Mh_lens = self.Mh_arr[i]
         Mstar_lens = self.Mstar_arr[i]
@@ -27,16 +32,30 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
         dec_lens = self.dec_arr[i]
         scale_rad =  self.Re_arr[i]
         conc = self.Conc_arr[i]
-        z_bins = np.linspace(0,6,21)
-        z_digit = np.digitize(self.source_generator[:,0],z_bins)
-        zlens_digit = np.digitize(zlens,z_bins)
-        rmag_max = np.min(self.source_generator[:,1][z_digit==zlens_digit])
+        self._pops = (zlens,Mh_lens,Mstar_lens,ra_lens,dec_lens,scale_rad,conc)
+        
+    
+    def count_source(self,i,h=.7,alpha=1,gamma=1):
+        
+        self.pops = i
+        zlens,Mh_lens,Mstar_lens,ra_lens,dec_lens,scale_rad,conc = self.pops
+        zlens_digit = np.digitize(zlens,self.z_bins)
+        rmag_max = np.min(self.source_generator[:,1][self.z_digit==zlens_digit])
         analyse = analyser(z1=zlens,z2=5.9,M200=10**Mh_lens*h,Mstar=10**Mstar_lens*h,c=conc,Re=scale_rad,
                           alpha=alpha,gamma=gamma,source_mag=rmag_max)
        
         search_lim = analyse.get_search_range()[1]
         lambda_rate = self.TOTnum * (np.pi*search_lim**2) / (5000*3600**2)
         INT_num = np.random.poisson(lambda_rate,size=1)
+        
+        return self.pops, search_lim, INT_num
+        
+          
+        
+    def run_one(self,i,h=.7,buffer=.1,alpha=1,gamma=1):
+        
+        pops, search_lim, INT_num = self.count_source(i,alpha=alpha,gamma=gamma)
+        zlens,Mh_lens,Mstar_lens,ra_lens,dec_lens,scale_rad,conc = pops
         Lens_arr = [0.]
         Source_arr = [0.]
 
