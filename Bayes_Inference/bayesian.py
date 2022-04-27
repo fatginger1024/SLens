@@ -148,7 +148,7 @@ class interpolations(truth_properties):
             zlens = dat[:,2]
             einsrad = dat[:,5]
             ind = einsrad > 0
-            exp_e = einsrad[ind]
+            exp_e = np.log10(einsrad[ind])
             mo1 = np.mean(exp_e)
             mo2 = np.var(exp_e)
             N = len(einsrad[ind])
@@ -194,8 +194,9 @@ class interpolations(truth_properties):
         
         Vals = [self.totnum,self.Args1,self.Args2,self.Args3**2,self.Args4**2]
         Vals_interp = [self.new_totnum,self.new_mu,self.new_sig,self.new_meanvar**2,self.new_varvar**2]
-        Vals_title = [r"$\mathcal{N}_{\rm{SL}}$",r"$\mu_{\theta_E}$",r"$\sigma^2_{\theta_E}$",r"$Var[\mu_{\theta_E}]$",r"$Var[\sigma^2_{\theta_E}]$"]
-        Vals_interp_title = [r"$ \mathcal{N}_{\rm{SL,spl}}$",r"$\mu_{\theta_E,\rm{spl}}$",r"$\sigma^2_{\theta_E,\rm{spl}}$",r"$Var[\mu_{\theta_E}]_{\rm{spl}}$",r"$Var[\sigma^2_{\theta_E}]_{\rm{spl}}$"]
+        Vals_title = [r"$\mathcal{N}_{\rm{SL}}$",r"$\mu_{\log\,\theta_E}$",r"$\sigma^2_{\log\,\theta_E}$",r"${Var[\mu_{\log\,\theta_E}]}$",r"${Var[\sigma^2_{\log\,\theta_E}]}$"]
+
+        Vals_interp_title =[r"$\mathcal{N}_{\rm{SL},spl}$",r"$\mu_{\log\,\theta_E,spl}$",r"$\sigma^2_{\log\,\theta_E,spl}$",r"$Var[\mu_{\log\,\theta_E}]_{spl}$",r"$Var[\sigma^2_{\log\,\theta_E}]_{spl}$"]
 
         fig,ax = plt.subplots(2,5,figsize=(15,6))
         for i in range(len(Vals)):
@@ -210,6 +211,11 @@ class interpolations(truth_properties):
             if i == 0:
                 cbar.set_ticks([100000,200000,300000])
                 cbar.set_ticklabels(['100k','200k','300k'])
+            if i in [3,4]:
+                cbar.formatter.set_powerlimits((0, 0))
+                cbar.ax.yaxis.set_offset_position('left')
+                cbar.update_ticks()
+
             ax[0,i].set_ylabel(r'$\alpha_{\rm{sps}}$')
             ax[0,i].set_xlabel(r'$\gamma_{DM}$')
             ax[0,i].set_title(Vals_title[i],fontsize=15)
@@ -225,19 +231,19 @@ class interpolations(truth_properties):
             if i == 0:
                 cbar.set_ticks([100000,200000,300000])
                 cbar.set_ticklabels(['100k','200k','300k'])
+            if i in [3,4]:
+                cbar.formatter.set_powerlimits((0, 0))
+                cbar.ax.yaxis.set_offset_position('left')
+                cbar.update_ticks()
+
             ax[1,i].set_ylabel(r'$\alpha_{\rm{sps}}$')
             ax[1,i].set_xlabel(r'$\gamma_{DM}$')
             ax[1,i].set_title(Vals_interp_title[i],fontsize=15)
 
 
-        fig.tight_layout(h_pad=.4,w_pad=.4)
-        #plt.subplots_adjust(left=0.1,
-        #            bottom=0.1, 
-        #            right=0.9, 
-        #            top=0.9, 
-        #           wspace=0.5, 
-        #            hspace=0.5)
-        
+        #fig.tight_layout(pad=.5,h_pad=-1.3,w_pad=.1)
+        plt.subplots_adjust(wspace=.8, hspace=-.2)
+       
         plt.show()
         fig.savefig("./plots/interp_3.eps",format='eps')
         
@@ -281,8 +287,8 @@ class interpolations(truth_properties):
     def get_new_Z4(self,):
 
         Num_Z4 = 500
-        Gamma_Z4 = np.linspace(1.295,1.305,Num_Z4)
-        Alpha_Z4 = np.linspace(1.18,1.22,Num_Z4)
+        Gamma_Z4 = np.linspace(1.294,1.306,Num_Z4)
+        Alpha_Z4 = np.linspace(1.182,1.218,Num_Z4)
         
         totnum_Z4 = self.func2d(Gamma_Z4,Alpha_Z4)
         mu_Z4 = self.func2d_mu(Gamma_Z4,Alpha_Z4)
@@ -316,21 +322,21 @@ class interpolations(truth_properties):
         ax.contourf(x,y,Z3,levels=np.concatenate((lvs3,Z3.max()),axis=None),cmap='Greens',zorder=2)
         #ax.contourf(x,y,Z4,levels=np.concatenate((lvs4,Z4.max()),axis=None),cmap='Reds',zorder=4)
         ax.contourf(Gamma_Z4,Alpha_Z4,Z4,levels=np.concatenate((lvs4,Z4.max()),axis=None),cmap='Reds',zorder=4)
-        ax.text(.92,1.75,r'$\mathcal{N}_{\rm{SL}}$',fontsize=18, style='oblique', ha='center',va='top', wrap=True)
-        ax.text(1.18,1.73,r'$\mu_{\theta_E}$',fontsize=18, style='oblique', ha='center',va='top', wrap=True)
-        ax.text(1.39,1.75,r'$\sigma^2_{\theta_E}$',fontsize=18, style='oblique', ha='center',va='top', wrap=True)
+        ax.text(1.09,1.76,r'$\mathcal{N}_{\rm{SL}}$',fontsize=14, style='oblique', ha='center',va='top', wrap=True)
+        ax.text(1.3,1.75,r'$\mu_{\log\,\theta_E}$',fontsize=14, style='oblique', ha='center',va='top', wrap=True)
+        ax.text(1.49,1.77,r'$\sigma^2_{\log\,\theta_E}$',fontsize=14, style='oblique', ha='center',va='top', wrap=True)
         ax.set_ylabel(r'$\alpha_{\rm{sps}}$')
         ax.set_xlabel(r'$\gamma_{\rm{DM}}$')
 
         axins = ax.inset_axes([0.58, 0.3, 0.35, 0.35])
         #axins.contourf(x,y,Z4,levels=np.concatenate((lvs4,Z4.max()),axis=None),cmap='Reds')
         axins.contourf(Gamma_Z4,Alpha_Z4,Z4,levels=np.concatenate((lvs4,Z4.max()),axis=None),cmap='Reds')
-        axins.text(1.302,1.217,'joint',fontsize=10, family='serif',style='italic', ha='center',va='top', wrap=True)
+        axins.text(1.303,1.215,'joint',fontsize=10, family='serif',style='italic', ha='center',va='top', wrap=True)
         axins.plot(self.gamma_truth,self.alpha_truth,lw=0,marker='h',color="khaki",mec="k",markersize=5,zorder=2,label="truth")
         axins.tick_params(axis='x', labelsize=8) 
         axins.tick_params(axis='y', labelsize=8) 
-        axins.set_xlim([1.295,1.305])
-        axins.set_ylim([1.18,1.22])
+        axins.set_xlim([1.294,1.306])
+        axins.set_ylim([1.182,1.218])
         axins.legend(loc=3,fontsize="x-small")
 
         ax.indicate_inset_zoom(axins, edgecolor="black")
