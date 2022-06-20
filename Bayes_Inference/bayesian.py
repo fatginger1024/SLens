@@ -194,9 +194,9 @@ class interpolations(truth_properties):
         
         Vals = [self.totnum,self.Args1,self.Args2,self.Args3**2,self.Args4**2]
         Vals_interp = [self.new_totnum,self.new_mu,self.new_sig,self.new_meanvar**2,self.new_varvar**2]
-        Vals_title = [r"$\mathcal{N}_{\rm{SL}}$",r"$\mu_{\log\,\theta_E}$",r"$\sigma^2_{\log\,\theta_E}$",r"${Var[\mu_{\log\,\theta_E}]}$",r"${Var[\sigma^2_{\log\,\theta_E}]}$"]
+        Vals_title = [r"$\mathcal{N}_{\rm{SL}}$",r"$\langle\mu_{\log\,\theta_E}\rangle$",r"$\langle\sigma^2_{\log\,\theta_E}\rangle$",r"${Var[\mu_{\log\,\theta_E}]}$",r"${Var[\sigma^2_{\log\,\theta_E}]}$"]
 
-        Vals_interp_title =[r"$\mathcal{N}_{\rm{SL},spl}$",r"$\mu_{\log\,\theta_E,spl}$",r"$\sigma^2_{\log\,\theta_E,spl}$",r"$Var[\mu_{\log\,\theta_E}]_{spl}$",r"$Var[\sigma^2_{\log\,\theta_E}]_{spl}$"]
+        Vals_interp_title =[r"$\mathcal{N}_{\rm{SL},spl}$",r"$\langle\mu_{\log\,\theta_E,spl}\rangle$",r"$\langle\sigma^2_{\log\,\theta_E,spl}\rangle$",r"$Var[\mu_{\log\,\theta_E}]_{spl}$",r"$Var[\sigma^2_{\log\,\theta_E}]_{spl}$"]
 
         fig,ax = plt.subplots(2,5,figsize=(15,6))
         for i in range(len(Vals)):
@@ -379,8 +379,8 @@ if __name__=="__main__":
     #plots.get_pairplot2()
     plots = interpolations()
     plots.get_interpolations()
-    plots.get_contour()
-    plots.get_limits()
+    #plots.get_contour()
+    #plots.get_limits()
 
 
 
