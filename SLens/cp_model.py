@@ -10,7 +10,7 @@ from scipy.interpolate import interp2d
 class gnfwSersic(gnfw,Sersic,fxgx):
     
     def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1): 
-        gnfw.__init__(self,z1=z1,z2=z2,M200=1e13,c=5,gamma=1)
+        gnfw.__init__(self,z1=z1,z2=z2,M200=M200,c=c,gamma=gamma)
         Sersic.__init__(self,Mstar=alpha*Mstar,Re=Re)
         fxgx.__init__(self,)
    
