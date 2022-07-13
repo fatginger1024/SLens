@@ -15,6 +15,8 @@ setuptools.setup(
     url="https://github.com/fatginger1024/SLens",
     license="MIT",
     packages=setuptools.find_packages(),
+    package_data={'test_data': ['*']},
+    include_package_data=True,
     classifiers=[
         "Development Status :: 0 - Alpha",
         "Intended Audience :: Education",
