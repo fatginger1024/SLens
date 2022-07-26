@@ -11,7 +11,7 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
     def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1,source_mag=25.,dist=1):
         
         
-        load_MICE.__init__(self,)
+        load_MICE.__init__(self,data="1")
         load_COSMOS.__init__(self,)
         ReConc_loader.__init__(self,)
         analyser.__init__(self,z1=z1,z2=z2,M200=M200,Mstar=Mstar,c=c,Re=Re,
@@ -107,44 +107,10 @@ def run_mocks(sim_num):
     alphas = np.linspace(1.,1.8,5)
     Gamma = np.repeat(gammas,5)
     Alpha = np.tile(alphas,5)
-    cat = load_MICE()
+    cat = load_MICE(data="1")
     num_data = len(cat.Mstar_arr)
     Lens_arr = []
     Source_arr = []
-    """
-    num_bus = 64
-    bussize = int(num_data/num_bus)+1
-    count = count#int(sys.argv[1])
-
-    if count == num_bus-1:
-        index = np.arange(count*bussize,num_data)
-
-    else:
-        index = np.arange(count*bussize,(count+1)*bussize,1)
-    ind_cut = ind_cut#int(sys.argv[2])
-    Lens_arr = []
-    Source_arr = []
-    
-    for item in np.arange(num_data)[index]:
-        
-        gamma = Gamma[ind_cut]
-        alpha = Alpha[ind_cut]
-        sim = SimRun(gamma=gamma,alpha=alpha)
-        P,M = sim.run_one(i=item,alpha=alpha,gamma=gamma)    
-        if P[0] != 0.:
-            Lens_arr.append(P)
-            Source_arr.append(M)
-    if len(Lens_arr)>0:
-        dat1 = np.concatenate(Lens_arr,axis=None).reshape(-1,10)
-        dat2 = np.concatenate(Source_arr,axis=None).reshape(-1,3)
-        dirbase = "SLens/mocks/"+str(count)
-        if not os.path.exists(dirname):
-            os.mkdir(dirname)
-
-
-        #dat1.tofile(dirbase+'/gamma{}_alpha{}.bin'.format(gamma,alpha),format='f8')
-        #dat2.tofile(dirbase+'/gamma{}_alpha{}_Msource.bin'.format(gamma,alpha),format='f8')
-    """
     sim = SimRun()
     for i in tqdm(range(num_data)):
        
