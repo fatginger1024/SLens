@@ -64,7 +64,7 @@ class analyser(gnfwSersic):
         pos_image2 = -dist_image2 * (self.thetas*206265)
         mu_image2 = np.abs(1/self.lens_detA(dist_image2))[0]
         
-        if self.dist <= self.attr[3] and self.get_lensed_mag(mu_image2)<self.m_tol:
+        if self.dist <= self.attr[3]:
             pass
              
         else:
