@@ -3,15 +3,17 @@ from .load_data import load_MICE,load_COSMOS,ReConc_loader
 
 import os
 import sys
+import time
 import numpy as np
 from tqdm import tqdm
+from multiprocessing import Process, Queue, Value, Array
 
 class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
     
     def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1,source_mag=25.,dist=1):
         
         
-        load_MICE.__init__(self,data="1")
+        load_MICE.__init__(self,data="128")
         load_COSMOS.__init__(self,)
         ReConc_loader.__init__(self,)
         analyser.__init__(self,z1=z1,z2=z2,M200=M200,Mstar=Mstar,c=c,Re=Re,
@@ -82,7 +84,7 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
                     except RuntimeError or KeyError:
                         print("Runtime Error.")
                         
-                    if dist < dist_real:
+                    if dist < dist_real and stat[2] !=0:
 
                         eins_rad = stat[1]
                         pos_img1 = stat[2]
@@ -100,39 +102,64 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
 
 
         return Lens_arr,Source_arr
-    
-    
-def run_mocks(sim_num):
+
+def qinit(q,index):
+    for i in index:
+        q.put(i)
+
+def map_func(q,count,sim,arr1,arr2,alpha,gamma):
+    while not q.empty():
+        ind = q.get()
+        P, M = sim.run_one(ind,alpha=alpha,gamma=gamma)
+        if P[0] != 0.:
+            arr1[ind*10:(ind+1)*10] = P
+            arr2[ind*3:(ind+1)*3] = M
+            count.value += 1
+            num = count.value
+
+def main(sim_num,num_proc=8):
     gammas = np.linspace(.8,1.8,5)
     alphas = np.linspace(1.,1.8,5)
     Gamma = np.repeat(gammas,5)
     Alpha = np.tile(alphas,5)
-    cat = load_MICE(data="1")
+    cat = load_MICE(data="128")
     num_data = len(cat.Mstar_arr)
-    Lens_arr = []
-    Source_arr = []
+    index = np.arange(num_data)
+    Lens_arr = Array('d', np.zeros(num_data*10))
+    Source_arr = Array('d', np.zeros(num_data*3))
+    process_list = []
+    q = Queue(len(index))
+    num = Value('i', 0)
+    qinit(q,index)
     sim = SimRun()
-    for i in tqdm(range(num_data)):
-       
-        
-        P,M = sim.run_one(i,alpha=Alpha[sim_num],gamma=Gamma[sim_num])
-        if P[0] != 0.:
-            Lens_arr.append(P)
-            Source_arr.append(M)
-    if len(Lens_arr)>0:
-        dat1 = np.concatenate(Lens_arr,axis=None).reshape(-1,10)
-        dat2 = np.concatenate(Source_arr,axis=None).reshape(-1,3)
-        dirbase = "./mocks/"
-        #if not os.path.exists(dirbase):
-        #    os.mkdir(dirbase)
-        dat1.tofile(os.path.join(dirbase,'gamma{}_alpha{}.bin').format(Gamma[sim_num],Alpha[sim_num]),format='f8')
-        dat2.tofile(os.path.join(dirbase,'gamma{}_alpha{}_Msource.bin').format(Gamma[sim_num],Alpha[sim_num]),format='f8')
-
+    dirbase = "./mocks/"
+    if not os.path.exists(dirbase):
+        os.mkdir(dirbase)
+    for i in range(num_proc):
+        p = Process(target=map_func, 
+                    args=(q,
+                          num,
+                          sim,
+                          Lens_arr,
+                          Source_arr,
+                          Alpha[sim_num],
+                          Gamma[sim_num]
+                         )
+                   )
+        p.start()
+        process_list.append(p)
+    for i in process_list:
+        p.join() 
+    fp = dirbase+'gamma{}_alpha{}.txt'.format(Gamma[sim_num],Alpha[sim_num])
+    time.sleep(60)
+    np.savetxt(fp,Lens_arr[:])
+    np.savetxt(fp[:-4]+"_source.txt",Source_arr[:])
+    
+    
 if __name__ == "__main__":
-    start = int(sys.argv[1])
-    end = int(sys.argv[2])
-    for i in range(start,end+1):
-        run_mocks(i)
+    sim_num = int(sys.argv[1])
+    main(sim_num)
+   
 
 
 
