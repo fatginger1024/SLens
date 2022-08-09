@@ -123,7 +123,7 @@ def main(sim_num,num_proc=8):
     Gamma = np.repeat(gammas,5)
     Alpha = np.tile(alphas,5)
     cat = load_MICE(data="128")
-    num_data = len(cat.Mstar_arr)
+    num_data = 1000#len(cat.Mstar_arr)
     index = np.arange(num_data)
     Lens_arr = Array('d', np.zeros(num_data*10))
     Source_arr = Array('d', np.zeros(num_data*3))
@@ -132,7 +132,7 @@ def main(sim_num,num_proc=8):
     num = Value('i', 0)
     qinit(q,index)
     sim = SimRun()
-    dirbase = "./mocks/"
+    dirbase = "mocks/"
     if not os.path.exists(dirbase):
         os.mkdir(dirbase)
     for i in range(num_proc):
@@ -150,10 +150,13 @@ def main(sim_num,num_proc=8):
         process_list.append(p)
     for i in process_list:
         p.join() 
-    fp = dirbase+'gamma{}_alpha{}.txt'.format(Gamma[sim_num],Alpha[sim_num])
     time.sleep(60)
-    np.savetxt(fp,Lens_arr[:])
-    np.savetxt(fp[:-4]+"_source.txt",Source_arr[:])
+    arr1 = np.asarray(Lens_arr)
+    arr2 = np.asarray(Source_arr)
+    arr1 = arr1[arr1!=0].reshape(-1,10).T
+    arr2 = arr2[arr2!=0].reshape(-1,3).T
+    arr1.tofile(dirbase+"gamma{}_alpha{}.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
+    arr2.tofile(dirbase+"gamma{}_alpha{}_Msource.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
     
     
 if __name__ == "__main__":
