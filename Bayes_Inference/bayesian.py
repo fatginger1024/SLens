@@ -18,7 +18,7 @@ class truth_properties():
         
 class pairplots(truth_properties,analyser,load_MICE,load_COSMOS):
     
-    def __init__(self,gamma_truth:float=1.3,alpha_truth:float=1.2,sample_num:int=10000):
+    def __init__(self,gamma_truth:float=1.05,alpha_truth:float=1.,sample_num:int=10000):
         truth_properties.__init__(self,gamma_truth=gamma_truth,alpha_truth=alpha_truth)
         analyser.__init__(self,)
         load_MICE.__init__(self,)
@@ -79,8 +79,8 @@ class pairplots(truth_properties,analyser,load_MICE,load_COSMOS):
         d = {r'$\log\,M_{200}$':np.concatenate((dat[:,0]-np.log10(h),Mh),axis=None),r'$\log\,M_{*}$':np.concatenate((dat[:,1]-np.log10(h),Mstar),axis=None),r'$z_{L}$':np.concatenate((dat[:,2],zlens),axis=None),r'$c$':np.concatenate((dat[:,3],c),axis=None),r'$\log\,R_e$':np.concatenate((dat[:,4],Re),axis=None),'kind':kind}
 
         df = pd.DataFrame(data=d)
-        df = df.replace(1,'MICE')
-        df = df.replace(0,'Lenses')
+        df = df.replace(1,'MICE galaxies')
+        df = df.replace(0,'Lens galaxies')
         
         return df
     
@@ -91,14 +91,14 @@ class pairplots(truth_properties,analyser,load_MICE,load_COSMOS):
         kind[-len(r_mag):] = np.ones(len(r_mag))
         d = {r'$z_{S}$':np.concatenate((dat[:,2],redshift),axis=None),r'$m_0$':np.concatenate((dat[:,1],r_mag),axis=None),'kind':kind}
         df = pd.DataFrame(data=d)
-        df = df.replace(1,'COSMOS')
-        df = df.replace(0,'Sources')
+        df = df.replace(1,'COSMOS galaxies')
+        df = df.replace(0,'Source galaxies')
         
         return df
         
         
     def get_pairplot1(self,):
-        palette = {"Lenses":'lightsteelblue','MICE':'bisque'}    
+        palette = {"Lens galaxies":'lightsteelblue','MICE galaxies':'bisque'}    
         df = self.get_dataframe1()
         g = sns.PairGrid(df, hue="kind",corner=True)
         g.map_lower(sns.kdeplot,levels=[.003,.05,.34])
@@ -110,7 +110,7 @@ class pairplots(truth_properties,analyser,load_MICE,load_COSMOS):
         
     def get_pairplot2(self,):
         
-        palette = {"Sources":'lightsteelblue','COSMOS':'bisque'}    
+        palette = {"Source galaxies":'lightsteelblue','COSMOS galaxies':'bisque'}    
         df = self.get_dataframe2()
         g = sns.PairGrid(df, hue="kind",corner=True)
         g.map_lower(sns.kdeplot,levels=[.003,.05,.34])
@@ -374,11 +374,11 @@ class interpolations(truth_properties):
         
 if __name__=="__main__":
     
-    #plots = pairplots()
-    #plots.get_pairplot1()
-    #plots.get_pairplot2()
-    plots = interpolations()
-    plots.get_interpolations()
+    plots = pairplots()
+    plots.get_pairplot1()
+    plots.get_pairplot2()
+    #plots = interpolations()
+    #plots.get_interpolations()
     #plots.get_contour()
     #plots.get_limits()
 
