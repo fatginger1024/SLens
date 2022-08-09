@@ -60,15 +60,16 @@ class analyser(gnfwSersic):
         dist_image1 = fmin(func1,1e-2,disp=0)[0]
         pos_image1 = dist_image1 * (self.thetas*206265)
         mu_image1 = np.abs(1/self.lens_detA(dist_image1))[0]
+        dist_image2 = fmin(func2,1e-2,disp=0)[0]
+        pos_image2 = -dist_image2 * (self.thetas*206265)
+        mu_image2 = np.abs(1/self.lens_detA(dist_image2))[0]
         
-        if self.dist <= self.attr[3]:
-            
-            dist_image2 = fmin(func2,1e-2,disp=0)[0]
-            pos_image2 = -dist_image2 * (self.thetas*206265)
-            mu_image2 = np.abs(1/self.lens_detA(dist_image2))[0]
-        
+        if self.dist <= self.attr[3] and self.get_lensed_mag(mu_image2)<self.m_tol:
+            pass
+             
         else:
-                   
+            pos_image1 = 0
+            mu_image1 = 0
             pos_image2 = 0
             mu_image2 = 0
         
