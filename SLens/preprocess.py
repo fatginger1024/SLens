@@ -1,6 +1,6 @@
 import numpy as np
-from ..models import gnfw, mass_size, concentration, Distances
-from ..load_data import load_MICE
+from .models import gnfw, mass_size, mass_size_redshift, concentration, Distances
+from .load_data import load_MICE
 
 class _fxgx(gnfw):
 
@@ -36,31 +36,53 @@ class _fxgx(gnfw):
     
 
 
-class _ReConc_generator(mass_size,concentration,load_MICE):
+class _ReConc_generator(mass_size,mass_size_redshift, concentration,load_MICE):
     
     def __init__(self,h=.7,write=False):
-        load_MICE.__init__(self,)
+        load_MICE.__init__(self,data="128")
         mass_size.__init__(self,)
+        mass_size_redshift.__init__(self,)
         concentration.__init__(self,)
         self.h = h
         if write == True:
-            self.data_gen()
+            print("mice len: ",len(self.Mstar_arr))
+            self.data_gen(1)
         
       
     
-    def data_gen(self,):
+    def data_gen(self,scatter=0):
         
         scale_rad = np.zeros(len(self.Mstar_arr))
         conc_arr = np.zeros(len(self.Mstar_arr))
 
         for i in range(len(self.Mstar_arr)):
             scale_rad[i] =  self.get_Re_from_Mstar(10**self.Mstar_arr[i]/self.h)
-            conc_arr[i] = self.concentration(10**self.Mh_arr[i],self.zlens_arr[i])
-            
-        dirbase = "SLens/test_data/"
-        np.c_[scale_rad,conc_arr].tofile(dirbase+"RadConc.bin",format="f8")
+            c = self.concentration(10**self.Mh_arr[i],self.zlens_arr[i])
+            if scatter:
+                scatter_c = .009
+                conc_arr[i] = 10.0 ** (np.random.normal(np.log10(c),scatter_c))
+            else:
+                conc_arr[i] = c
 
-        return scale_rad,conc
+        dirbase = "SLens/test_data/"
+        np.c_[scale_rad,conc_arr].tofile(dirbase+"RadConc_scatter.bin",format="f8")
+
+        return scale_rad,conc_arr
+    
+    def data_gen_redshift(self):
+        
+        scale_rad = np.zeros(len(self.Mstar_arr))
+        conc_arr = np.zeros(len(self.Mstar_arr))
+
+        for i in range(len(self.Mstar_arr)):
+            scale_rad[i] =  self.get_Re(10**self.Mstar_arr[i]/self.h,self.zlens_arr[i])
+            c = self.concentration(10**self.Mh_arr[i],self.zlens_arr[i])
+            conc_arr[i] = c
+
+        dirbase = "SLens/test_data/"
+        np.c_[scale_rad,conc_arr].tofile(dirbase+"RadConc_nedkova.bin",format="f8")
+
+        return scale_rad,conc_arr
     
     
 class _tables(Distances):
