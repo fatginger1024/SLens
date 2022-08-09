@@ -50,9 +50,12 @@ class ReConc_loader():
     
 
 class load_MICE():
-    def __init__(self,):    
+    def __init__(self,data="128"):    
         dirbase = "SLens/test_data/"
-        dat = Table.read(dirbase+"9981.fits",format="fits")
+        if data == "128":
+            dat = Table.read(dirbase+"9981.fits",format="fits")
+        else:
+            dat = Table.read(dirbase+"11601.fits",format="fits")
         self.Mstar_arr = np.array(dat['lmstellar'])
         self.Mh_arr = np.array(dat['lmhalo'])
         self.zlens_arr = np.array(dat['z_cgal'])
