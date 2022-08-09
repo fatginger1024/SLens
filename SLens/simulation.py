@@ -123,7 +123,7 @@ def main(sim_num,num_proc=8):
     Gamma = np.repeat(gammas,5)
     Alpha = np.tile(alphas,5)
     cat = load_MICE(data="128")
-    num_data = 1000#len(cat.Mstar_arr)
+    num_data = len(cat.Mstar_arr)
     index = np.arange(num_data)
     Lens_arr = Array('d', np.zeros(num_data*10))
     Source_arr = Array('d', np.zeros(num_data*3))
