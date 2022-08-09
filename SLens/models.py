@@ -1,5 +1,6 @@
 from math import *
 import numpy as np
+from scipy.stats import truncnorm
 from scipy.integrate import quad,quad_vec
 from scipy.special import hyp2f1,gamma,gammainc
 from scipy.optimize import bisect
@@ -178,6 +179,25 @@ class mass_size():
         logRe =  np.random.normal(loc=loc,scale=sigmaR,size=1)
         
         return 10**logRe
+    
+class mass_size_redshift():
+    
+    def get_Re(self,Mstar,z):
+        
+        if z <= 0.5:
+            logA = np.random.normal(.61,.01)
+            A = 10**logA
+            B = np.random.normal(.68,.04)
+            
+        else:
+            logA = np.random.normal(.45,.01)
+            A = 10**logA
+            B = np.random.normal(.64,.03)
+            
+        Re = A*(Mstar/5e10)**B
+        
+        return Re
+    
     
 class Sersic():
     """
