@@ -74,9 +74,17 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
                     dist = search_lim*np.sqrt(np.random.uniform(size=1))
 
                     try:
-                        analyse_einsrad = analyser(z1=zlens,z2=z2_source,M200=10**Mh_lens*h,Mstar=10**Mstar_lens*h,
-                                                        c=conc,Re=scale_rad,alpha=alpha,gamma=gamma,
-                                                   source_mag=rmag_source,dist=dist)
+                        analyse_einsrad = analyser(z1=zlens,
+                                z2=z2_source,
+                                M200=10**Mh_lens*h,
+                                Mstar=10**Mstar_lens*h,
+                                c=conc,
+                                Re=scale_rad,
+                                alpha=alpha,
+                                gamma=gamma,
+                                source_mag=rmag_source,
+                                dist=dist
+                                )
                         stat = analyse_einsrad.get_cross_section()
                         dist_real = stat[0]
 
@@ -85,7 +93,7 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
                         print("Runtime Error.")
                         
                     if dist < dist_real and stat[2] !=0:
-
+                           
                         eins_rad = stat[1]
                         pos_img1 = stat[2]
                         pos_img2 = stat[3]
@@ -95,6 +103,9 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
                                              eins_rad,pos_img1,pos_img2,mu_img1,mu_img2]),axis=None)
                         Source_arr = np.array([eins_rad,rmag_source,z2_source])
                         print("found one!")
+                        print("distance check: ",dist,dist_real)
+                        print("magnitude check: ",analyse_einsrad.get_lensed_mag(mu_img2))
+                        print("beta mag: ",analyse_einsrad.get_lensed_mag(1./np.abs(analyse_einsrad.lens_detA(analyse_einsrad.attr[-1]))))
                         print(Lens_arr)
                         print(Source_arr)
 
@@ -155,8 +166,10 @@ def main(sim_num,num_proc=8):
     arr2 = np.asarray(Source_arr)
     arr1 = arr1[arr1!=0].reshape(-1,10).T
     arr2 = arr2[arr2!=0].reshape(-1,3).T
-    arr1.tofile(dirbase+"gamma{}_alpha{}.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
-    arr2.tofile(dirbase+"gamma{}_alpha{}_Msource.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
+    print("Finished. ")
+    print("Check results:\n total lenses found: ",arr1.shape[1])
+    arr1.tofile(dirbase+"gamma{}_alpha{}_nedkova.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
+    arr2.tofile(dirbase+"gamma{}_alpha{}_Msource_nedkova.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
     
     
 if __name__ == "__main__":

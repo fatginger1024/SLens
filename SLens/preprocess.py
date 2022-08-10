@@ -39,7 +39,7 @@ class _fxgx(gnfw):
 class _ReConc_generator(mass_size,mass_size_redshift, concentration,load_MICE):
     
     def __init__(self,h=.7,write=False):
-        load_MICE.__init__(self,data="128")
+        load_MICE.__init__(self,data="1")
         mass_size.__init__(self,)
         mass_size_redshift.__init__(self,)
         concentration.__init__(self,)
@@ -65,8 +65,11 @@ class _ReConc_generator(mass_size,mass_size_redshift, concentration,load_MICE):
                 conc_arr[i] = c
 
         dirbase = "SLens/test_data/"
-        np.c_[scale_rad,conc_arr].tofile(dirbase+"RadConc_scatter.bin",format="f8")
-
+        if scatter:
+            np.c_[scale_rad,conc_arr].tofile(dirbase+"RadConc_scatter.bin",format="f8")
+        else:
+            np.c_[scale_rad,conc_arr].tofile(dirbase+"RadConc.bin",format="f8")
+        
         return scale_rad,conc_arr
     
     def data_gen_redshift(self):

@@ -2,20 +2,20 @@ from .cp_model import gnfwSersic
 
 from math import *
 import numpy as np
-from scipy.optimize import fmin,bisect,brentq
+from scipy.optimize import minimize,fmin,fmin_slsqp,bisect,brentq
 
 
 
 
 class analyser(gnfwSersic):
     
-    def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1,source_mag=25.,dist=1,m_tol=26.3):
+    def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1,source_mag=21.,dist=1,m_tol=26.3):
         
         gnfwSersic.__init__(self,z1=z1,z2=z2,M200=M200,Mstar=Mstar,c=c,Re=Re,alpha=alpha,gamma=gamma)
         self.dist = dist
         self.mag_unlensed = source_mag
         self.m_tol = m_tol
-        self.attr = 2
+        self.attr = "attr"
     
  
     
@@ -32,7 +32,10 @@ class analyser(gnfwSersic):
         - radial critical curve,
         - tangential caustic,
         - radial caustic,
-        - caustic with applied apparent magnitude threshold.
+        - strong lensing limit (in the source plane) 
+          with applied apparent magnitude threshold.
+        - strong lensing limit (in the lens plane) 
+          with applied apparent magnitude threshold.  
         """
         minsearch = fmin(self.lens_beta,1e-2,disp=0)
         xval_min = minsearch[0]
@@ -41,11 +44,19 @@ class analyser(gnfwSersic):
         eins = sol*self.thetas*206265
         caus_r = self.lens_beta(xval_min)[0]*self.thetas*206265
         caus_t = self.lens_beta(sol)[0]*self.thetas*206265
-        sol = fmin(self.magnitude_difference,1e-2,disp=0)
+        x_try = np.linspace(1e-4,2e-2,100)
+        ind_try = np.argmin(self.magnitude_difference(x_try))
+        x0 = .5*sol
+        sol = fmin_slsqp(self.magnitude_difference,x0,bounds=((xval_min,sol),),disp=0)[0]
         beta_mag = self.lens_beta(sol)[0]*self.thetas*206265
-        
-        self._attr = (eins,radial_critical,np.abs(caus_t),np.abs(caus_r),
-                      np.abs(beta_mag))
+        self._attr = (
+                eins,
+                radial_critical,
+                np.abs(caus_t),
+                np.abs(caus_r),
+                np.abs(beta_mag),
+                sol
+                )
     
     def get_search_range(self):
         
@@ -57,14 +68,14 @@ class analyser(gnfwSersic):
         dist_beta = (self.dist/(self.thetas*206265))
         func1 = lambda x: np.abs(self.lens_beta(x)-dist_beta)
         func2 = lambda x: np.abs(self.lens_beta(x)+dist_beta)
-        dist_image1 = fmin(func1,1e-2,disp=0)[0]
+        dist_image1 = fmin(func1,.1,xtol=1e-6,disp=0)[0]
         pos_image1 = dist_image1 * (self.thetas*206265)
         mu_image1 = np.abs(1/self.lens_detA(dist_image1))[0]
-        dist_image2 = fmin(func2,1e-2,disp=0)[0]
+        dist_image2 = fmin(func2,.5*dist_image1,xtol=1e-6,disp=0)[0]
         pos_image2 = -dist_image2 * (self.thetas*206265)
         mu_image2 = np.abs(1/self.lens_detA(dist_image2))[0]
         
-        if self.dist <= self.attr[3]:
+        if self.dist <= self.attr[4]:
             pass
              
         else:
@@ -77,8 +88,9 @@ class analyser(gnfwSersic):
         return self.attr[4],self.attr[0],pos_image1,pos_image2,mu_image1,mu_image2
     
     def plotter(self,):
-        
-        x = self._x
+        const = self.thetas*206265 
+        x = np.linspace(self.attr[1]/const,self.attr[0]/const,100)
+        beta = self.lens_beta(x)
         y = self.magnitude_difference(x)
         
         import matplotlib.pyplot as plt
@@ -104,7 +116,7 @@ class analyser(gnfwSersic):
     
     
 if __name__ == "__main__":
-    stat = analyser()
+    stat = analyser(M200=10**13.5,dist=.5)
     stat.plotter()
     stat.get_search_range()
     
