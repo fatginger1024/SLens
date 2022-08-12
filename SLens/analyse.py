@@ -9,7 +9,7 @@ from scipy.optimize import minimize,fmin,fmin_slsqp,bisect,brentq
 
 class analyser(gnfwSersic):
     
-    def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1,source_mag=21.,dist=1,m_tol=26.3):
+    def __init__(self,z1=.3,z2=1.5,M200=1e13,Mstar=10**11.5,c=5,Re=3,alpha=1,gamma=1,source_mag=25.,dist=1,m_tol=26.3):
         
         gnfwSersic.__init__(self,z1=z1,z2=z2,M200=M200,Mstar=Mstar,c=c,Re=Re,alpha=alpha,gamma=gamma)
         self.dist = dist

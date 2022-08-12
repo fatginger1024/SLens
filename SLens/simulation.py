@@ -168,8 +168,8 @@ def main(sim_num,num_proc=8):
     arr2 = arr2[arr2!=0].reshape(-1,3).T
     print("Finished. ")
     print("Check results:\n total lenses found: ",arr1.shape[1])
-    arr1.tofile(dirbase+"gamma{}_alpha{}_nedkova.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
-    arr2.tofile(dirbase+"gamma{}_alpha{}_Msource_nedkova.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
+    arr1.tofile(dirbase+"gamma{}_alpha{}.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
+    arr2.tofile(dirbase+"gamma{}_alpha{}_Msource.bin".format(Gamma[sim_num],Alpha[sim_num]),format="f8")
     
     
 if __name__ == "__main__":

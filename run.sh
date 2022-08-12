@@ -1,1 +1,3 @@
-python -m SLens.simulation 0 2  
+for i in {0..24}; do 
+    python -m SLens.simulation $i
+done  

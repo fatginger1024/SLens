@@ -43,7 +43,7 @@ class ReConc_loader():
     
     def __init__(self,):
         dirbase = "SLens/test_data/"
-        RadConc = np.fromfile(dirbase+"RadConc_nedkova.bin",dtype="f8").reshape(-1,2)
+        RadConc = np.fromfile(dirbase+"RadConc.bin",dtype="f8").reshape(-1,2)
         self.Re_arr = RadConc[:,0]
         self.Conc_arr = RadConc[:,1]
         
