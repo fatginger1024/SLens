@@ -43,7 +43,7 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
         zlens,Mh_lens,Mstar_lens,ra_lens,dec_lens,scale_rad,conc = self.pops
         zlens_digit = np.digitize(zlens,self.z_bins)
         rmag_max = np.min(self.source_generator[:,1][self.z_digit==zlens_digit])
-        analyse = analyser(z1=zlens,z2=5.9,M200=10**Mh_lens*h,Mstar=10**Mstar_lens*h,c=conc,Re=scale_rad,
+        analyse = analyser(z1=zlens,z2=5.9,M200=10**Mh_lens/h,Mstar=10**Mstar_lens/h,c=conc,Re=scale_rad,
                           alpha=alpha,gamma=gamma,source_mag=rmag_max)
        
         search_lim = analyse.get_search_range()[1]
@@ -76,8 +76,8 @@ class SimRun(analyser,load_MICE,load_COSMOS,ReConc_loader):
                     try:
                         analyse_einsrad = analyser(z1=zlens,
                                 z2=z2_source,
-                                M200=10**Mh_lens*h,
-                                Mstar=10**Mstar_lens*h,
+                                M200=10**Mh_lens/h,
+                                Mstar=10**Mstar_lens/h,
                                 c=conc,
                                 Re=scale_rad,
                                 alpha=alpha,
